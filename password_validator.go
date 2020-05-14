@@ -29,7 +29,7 @@ func validatePassword(password string, weakList map[string]bool, wg *sync.WaitGr
 	ch <- validate.Validate(password, weakList)
 }
 
-// Each vailidattion run in a seperate goroutine concurrently
+// Each vailidattion run in separated goroutines concurrently
 func main() {
 	wg := new(sync.WaitGroup)
 	passwordSize := 0

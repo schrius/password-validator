@@ -1,5 +1,8 @@
 # Validate Password
 
+## Prerequisites
+go > 1.12 is required
+
 Password Validator validate the following rules:
 1. Have an 8 character minimum
 2. AT LEAST 64 character maximum
@@ -17,7 +20,7 @@ go get -u ./...
 ### Build
 To build an excutable run:
 ```bash
-go build -o ./validator ./password_validator.go
+go build -o ./password_validator ./password_validator.go
 ```
 
 ## Validate Example
@@ -28,7 +31,7 @@ password1 -> Error: Too Common
 *** -> Error: Invalid Charaters
 ```
 
-## MakeFile
+## Quick Start
 Makefile contain command to get package, test, and build the program in an easy way
  ```bash
 make

@@ -19,15 +19,13 @@ func (e *Error) Error() string {
 		e.Password, e.Messsage)
 }
 
-// ValidLength
-// validate password length
+// ValidLength validate password length
 // minimum 8 and maximum is 64
 func ValidLength(password string) bool {
 	return len(password) >= 8 && len(password) <= 64
 }
 
-// ValidLetter
-// validate password if characters are letters, marks, numbers, punctuation, symbols, and the ASCII space character
+// ValidLetter validate password if characters are letters, marks, numbers, punctuation, symbols, and the ASCII space character
 func ValidLetter(password string) bool {
 	for _, char := range password {
 		if !unicode.IsPrint(char) {
@@ -37,8 +35,7 @@ func ValidLetter(password string) bool {
 	return true
 }
 
-// IsWeakPassword
-// check password if it is weak by searching the weak password fine
+// IsWeakPassword check password if it is weak by searching the weak password fine
 // this should use for single password validation
 func IsWeakPassword(password, path string) bool {
 	file, err := os.Open(path)
@@ -79,7 +76,7 @@ func LoadWeakPasswordList(path string) map[string]bool {
 	return weakPasswordList
 }
 
-// Validate all requirment length, printable letter and weak password
+// Validate all requirement length, printable letter and weak password
 func Validate(password string, weaklist map[string]bool) error {
 	if !ValidLength(password) {
 		return &Error{
@@ -97,7 +94,6 @@ func Validate(password string, weaklist map[string]bool) error {
 		} else {
 			return nil
 		}
-	} else {
-		return nil
 	}
+	return nil
 }
