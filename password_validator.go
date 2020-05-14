@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"sync"
+
+	"github.com/schrius/password-validator/validate"
 )
 
 // Password validator
@@ -20,17 +22,14 @@ import (
 // password1 -> Error: Too Common
 // *** -> Error: Invalid Charaters
 
-func validatePassword(password string, weakList map[string]bool, wg *sync.WaitGroup, ch *chan error) {
+// validate password
+// push result to channel
+func validatePassword(password string, weakList map[string]bool, wg *sync.WaitGroup, ch chan error) {
 	defer wg.Done()
-	validate.validate(password, weakList)
+	ch <- validate.Validate(password, weakList)
 }
 
-func display(ch *chan error) {
-	if err := <-ch; err != nil {
-		fmt.Println(err)
-	}
-}
-
+// Each vailidattion run in a seperate goroutine concurrently
 func main() {
 	wg := new(sync.WaitGroup)
 	passwordSize := 0
@@ -40,7 +39,7 @@ func main() {
 
 	// load file if weak password list is provided
 	if len(os.Args) > 1 {
-		weakList = validate.loadWeakPasswordList(os.Args[1])
+		weakList = validate.LoadWeakPasswordList(os.Args[1])
 	}
 
 	// check each string if it meet the requirement
@@ -48,11 +47,15 @@ func main() {
 		password := scanner.Text()
 		wg.Add(1)
 		passwordSize++
-		go validatePassword(password, weakList, &wg, &ch)
+		go validatePassword(password, weakList, wg, ch)
 	}
 
+	// Retrieve Error from channel and display the message
 	for i := 0; i < passwordSize; i++ {
-		go display(&ch)
+		err := <-ch
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 
 	if err := scanner.Err(); err != nil {
