@@ -1,13 +1,13 @@
 GOCMD=go
-GOBUILD=$(GOCMD) build -o ./bin
+GOBUILD=$(GOCMD) build -o ./
 GOCLEAN=$(GOCMD) clean
-GOTEST=$(GOCMD) test
+GOTEST=$(GOCMD) test -v. 
 GOGET=$(GOCMD) get
 GOVET=$(GOCMD) vet
 
 .PHONY: deps clean build
 
-all: deps test clean build
+all: deps test build
 
 # test all packages
 test:
@@ -22,7 +22,7 @@ static:
 	$(GOVET) ./...
 
 clean: 
-	rm -rf ./bin
+	rm ./password_validator
 	
 build:
-	$(GOBUILD) ./password_validator.go
+	$(GOBUILD)password_validator ./password_validator.go
