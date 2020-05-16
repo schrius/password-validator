@@ -91,9 +91,8 @@ func Validate(password string, weaklist map[string]bool) error {
 			return &Error{
 				Password: password,
 				Messsage: "Too Common"}
-		} else {
-			return nil
 		}
+		return nil
 	}
 	return nil
 }
